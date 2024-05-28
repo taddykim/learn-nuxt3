@@ -1,0 +1,6 @@
+
+npx nuxi@latest init learn-nuxt-3
+code learn-nuxt-3
+
+npm install -D vue-tsc typescript
+npm install -D eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-plugin-vue eslint-plugin-nuxt @typescript-eslint/eslint-plugin @typescript-eslint/parser @nuxtjs/eslint-config-typescript
