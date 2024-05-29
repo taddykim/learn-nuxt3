@@ -108,7 +108,7 @@ definePageMeta({
   pageType: '',
   key: (route) => route.fullPath,
   keepalive: true,
-  alias: ['/lecture/:courseSlug'],
+  // alias: ['/lecture/:courseSlug'],
   // layout: 'same-layout',
 });
 
@@ -119,8 +119,8 @@ const movePage = async (path: string) => {
   await navigateTo(path);
 };
 
-console.log('route.meta.title', route.meta);
-console.log('route.meta.pageType', route.meta.pageType);
+// console.log('route.meta.title', route.meta);
+// console.log('route.meta.pageType', route.meta.pageType);
 /*
 const route = useRoute();
 const courseSlug = route.params.courseSlug as string;
