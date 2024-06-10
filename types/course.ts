@@ -37,3 +37,9 @@ export interface CourseWithPath extends NewType {
 //   gymcodingUrl: string;
 //   path: string;
 // }
+
+export interface CourseReturn {
+  course: Maybe<CourseWithPath>; // Course | null | undefined
+  prevCourse: Maybe<CourseWithPath>;
+  nextCourse: Maybe<CourseWithPath>;
+}

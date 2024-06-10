@@ -2,7 +2,10 @@
   <q-layout view="hHh lpR fFf" class="bg-grey-2">
     <q-header elevated class="bg-dark text-white">
       <q-toolbar>
-        <q-toolbar-title> Vue & Nuxt Mastery Class </q-toolbar-title>
+        <q-toolbar-title>
+          {{ counter }}
+          Vue & Nuxt Mastery Class
+        </q-toolbar-title>
         <NuxtLink v-slot="{ navigate }" custom to="/">
           <q-btn stretch flat :label="$t('home')" no-caps @click="navigate" />
         </NuxtLink>
@@ -41,9 +44,39 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
+        <q-separator dark vertical />
+        <!-- <ClientOnly> -->
+        <NuxtLink
+          v-if="!isAuthenticated"
+          v-slot="{ navigate }"
+          custom
+          to="/login"
+        >
+          <q-btn
+            stretch
+            flat
+            :label="$t('login')"
+            no-caps
+            @click="navigate()"
+          />
+        </NuxtLink>
+        <q-btn
+          v-else
+          stretch
+          flat
+          :label="$t('logout')"
+          no-caps
+          @click="signOut()"
+        />
+        <!-- </ClientOnly> -->
       </q-toolbar>
     </q-header>
     <q-page-container :style="pageContainerStyle">
+      <!-- <ClientOnly> -->
+      <q-banner v-if="isAuthenticated" class="bg-primary text-white">{{
+        authUser
+      }}</q-banner>
+      <!-- </ClientOnly> -->
       <slot></slot>
     </q-page-container>
   </q-layout>
@@ -51,6 +84,14 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
+
+// const { authUser, isAuthenticated } = useAuthUser();
+// const authUser = useAuthUser();
+// const isAuthenticated = useAuthenticated();
+// const { signOut } = useAuth();
+const authStore = useAuthStore();
+const { user: authUser, isAuthenticated } = storeToRefs(authStore);
+const { signOut } = authStore;
 
 const pageContainerStyle = computed(() => ({
   maxWidth: '1080px',
@@ -79,4 +120,8 @@ const { locale } = useI18n();
 const selectedLanguageName = computed(
   () => languages.value.find((lang) => lang.code === locale.value)?.name,
 );
+
+const counter = useState('counter');
+
+watch(locale, (val) => (useCookie('locale').value = val));
 </script>
