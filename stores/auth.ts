@@ -1,4 +1,4 @@
-import { getUser } from '@/composables/auth/usersData';
+// import { getUser } from '@/composables/auth/usersData';
 import type { UserWithoutPassword } from '@/types/user';
 
 export const useAuthStore = defineStore(
@@ -6,8 +6,16 @@ export const useAuthStore = defineStore(
   () => {
     const authUser = ref<Maybe<UserWithoutPassword>>();
 
-    const signIn = (email: string, password: string) => {
-      const foundUser = getUser(email, password);
+    const signIn = async (email: string, password: string) => {
+      const data = await $fetch<{ user: UserWithoutPassword }>('/auth/login', {
+        method: 'POST',
+        body: {
+          email,
+          password,
+        },
+      });
+      // const foundUser = getUser(email, password);
+      const { user: foundUser } = data;
       if (!foundUser) {
         throw createError({
           statusCode: 401,
@@ -21,7 +29,18 @@ export const useAuthStore = defineStore(
     const setUser = (user: Maybe<UserWithoutPassword>) =>
       (authUser.value = user);
 
-    const signOut = () => setUser(null);
+    // const signOut = () => setUser(null);
+    const signOut = async () => {
+      await $fetch('/auth/logout', { method: 'POST' });
+      setUser(null);
+    };
+
+    const fetchUser = async () => {
+      const data = await $fetch<{ user: UserWithoutPassword }>('/auth/user', {
+        headers: useRequestHeaders(['cookie']),
+      });
+      setUser(data.user);
+    };
 
     return {
       user: authUser,
@@ -31,6 +50,7 @@ export const useAuthStore = defineStore(
       ),
       signIn,
       signOut,
+      fetchUser,
     };
   },
   { persist: true },

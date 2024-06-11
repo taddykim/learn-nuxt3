@@ -103,7 +103,7 @@
 <script setup lang="ts">
 const route = useRoute();
 const courseSlug = route.params.courseSlug as string;
-const { course, prevCourse, nextCourse } = useCourse(courseSlug);
+const { course, prevCourse, nextCourse } = (await useCourse(courseSlug)) || {};
 
 // if (!course) {
 //   throw createError({
@@ -122,9 +122,9 @@ definePageMeta({
   pageType: '',
   key: (route) => route.fullPath,
   // validate: (route) => {
-  middleware: (route) => {
+  middleware: async (route) => {
     const courseSlug = route.params.courseSlug as string;
-    const { course } = useCourse(courseSlug);
+    const { course } = (await useCourse(courseSlug)) || {};
     // if (!course) {
     //   // return false;
     //   throw createError({

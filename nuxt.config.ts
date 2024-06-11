@@ -26,4 +26,9 @@ export default defineNuxtConfig({
       },
     ],
   },
+  vite: {
+    server: {
+      proxy: {},
+    },
+  },
 });
