@@ -34,7 +34,7 @@ useSeoMeta({
   ogTitle: title,
   ogDescription: description,
   ogType: 'website',
-  ogImage: '/img/og-img.png',
+  ogImage: '/img/og-image.png',
 });
 </script>
 
